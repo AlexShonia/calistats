@@ -23,6 +23,7 @@ function Skill_page() {
 
 export default function App() {
   const [is_stat, set_is_stat] = useState(true);
+  const [is_front, set_is_front] =useState(true);
 
   function handleClick(page) {
     if (page === "skills"){
@@ -30,6 +31,10 @@ export default function App() {
     } else {
       set_is_stat(true)
     }
+  }
+
+  function handleClick2() {
+    set_is_front(!is_front);
   }
 
   return(
@@ -40,8 +45,9 @@ export default function App() {
       </div>    
       <div className="app">
           <div className="character">
-            <button> Front </button>
-            <img src="https://www.thesun.ie/wp-content/uploads/sites/3/2023/09/crop-9027665.jpg?w=620"></img>
+            <button onClick={handleClick2}> {is_front ? "Front" : "Back"} </button>
+            {is_front ? <img src="https://www.thesun.ie/wp-content/uploads/sites/3/2023/09/crop-9027665.jpg?w=620"></img>
+                       : <img src="https://i.ytimg.com/vi/ncMorsTcUOE/maxresdefault.jpg"></img> }
           </div>
           <div className="stats_about">
             <div className='app_header'>
