@@ -53,3 +53,13 @@ code {
   width: 50vw;
   height: 90vh;
 }
+
+.app_header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.app_header button {
+  width: 25vw;
+  height: 5vh;
+}
