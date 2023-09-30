@@ -20,10 +20,12 @@ code {
   justify-content: space-between;
   height: 10vh;
 }
-
-.sign {
+.header button {
   margin-left: 1vw;
   margin-right: 1vw;
+  font-size: 2.5vw;
+  width: 25vw;
+  height: 8vh;
 }
 
 .app {
@@ -62,4 +64,41 @@ code {
 .app_header button {
   width: 25vw;
   height: 5vh;
+  font-size: 3vh;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+}
+
+.stats div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  text-align: center;
+  height: 15vh;
+}
+
+.skills {
+  height: 5vh;
+  display: flex;
+}
+
+.skills button {
+  width: 12.5vw;
+  height: 5vh;
+  font-size: 3vh;
+}
+
+.ppl_header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.ppl_picker {
+  display: flex;
+  justify-content: space-around;
 }
