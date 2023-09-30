@@ -3,7 +3,7 @@ import './App.css';
 import React, {useState} from 'react';
 
 
-function Front_back_button({is_front, set_is_front}) {
+function Front_back_btn({is_front, set_is_front}) {
   return(
     <>
       <button onClick={() => set_is_front(!is_front)}>
@@ -17,7 +17,7 @@ function Front_back_button({is_front, set_is_front}) {
   )
 }
 
-function Stats_button({is_stat, set_is_stat}) {
+function Stats_btn({is_stat, set_is_stat}) {
   return (
     <button onClick={() => set_is_stat(true)}>
       {is_stat ? "Stats+" : "Stats"}
@@ -25,7 +25,7 @@ function Stats_button({is_stat, set_is_stat}) {
   )
 }
 
-function Skills_button({is_stat, set_is_stat}) {
+function Skills_btn({is_stat, set_is_stat}) {
   return (
     <button onClick={() => set_is_stat(false)}>
       {is_stat ? "Skills" : "Skills+"}
@@ -82,61 +82,70 @@ function All_skills() {
 }
 
 function Push() {
-  return(
-    <>
-      <div className='ppl_header'>
-        <div>Exercise</div> <div>reps/seconds</div>
-      </div>
-      <div className='ppl_picker'>
-        <select>
-          <option>Pushups</option>
-          <option>one arm pushups</option>
-          <option>planche</option>
-        </select>
-        <input></input>
-      </div>
-    </>
-  )
+  const exercise_options = ["Pushups", "One arm pushups", "Planche"];
+  return <PPL_picker exercise_options={exercise_options}/>;
 }
 
 function Pull() {
-  return(
-    <>
-      <div className='ppl_header'>
-        <div>Exercise</div> <div>reps/seconds</div>
-      </div>
-      <div className='ppl_picker'>
-        <select>
-          <option>Pullups</option>
-          <option>one arm pushups</option>
-          <option>planche</option>
-        </select>
-        <input></input>
-      </div>
-    </>
-  )
+  const exercise_options = ["Pullups", "One arm pullups", "Planche"];
+  return <PPL_picker exercise_options={exercise_options}/>;
 }
 
 function Legs() {
-  return(
-    <>
-      <div className='ppl_header'>
-        <div>Exercise</div> <div>reps/seconds</div>
-      </div>
-      <div className='ppl_picker'>
-        <select>
-          <option>Squats</option>
-          <option>one arm pushups</option>
-          <option>planche</option>
-        </select>
-        <input></input>
-      </div>
-    </>
+  const exercise_options = ["Squats", "One leg squats", "Lunges"];
+  return <PPL_picker exercise_options={exercise_options} />;
+}
+
+function Add_exercise_btn({exercise_count, set_exercise_count}) {
+  function handle_click() {
+    const list = exercise_count.slice()
+    list.push("1")
+    set_exercise_count(list)
+  }
+
+  return (
+    <button className='add_exercise' onClick={handle_click}>+</button>
   )
 }
 
-
-
+function PPL_picker({ exercise_options }) {
+  const [exercise_count, set_exercise_count] = useState([])
+  return(
+    <>
+      <div className='ppl_window'>
+        <div className='ppl_exercise'>
+          <div>Exercise</div>
+          {exercise_count.map((i) => (
+              <select>
+              {exercise_options.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          ))}
+          <div id="btn_div">
+            <Add_exercise_btn exercise_count={exercise_count} set_exercise_count={set_exercise_count}/>
+          </div>
+        </div>
+        <div className='ppl_input'>
+          <div>reps/seconds</div>
+          {exercise_count.map((i) => (
+            <input></input> 
+          ))}
+        </div>
+        <div className='ppl_level'>
+          <div>level</div>
+          {exercise_count.map((i) => (
+            <div>5</div>
+          ))}
+        </div>
+      </div>
+    <div id='total'>
+      <h3>total</h3>
+      <div>69</div>
+    </div>
+    </>
+  )
+}
 
 export default function App() {
   const [is_stat, set_is_stat] = useState(true);
@@ -150,12 +159,12 @@ export default function App() {
       </div>    
       <div className="app">
           <div className="character">
-            <Front_back_button is_front={is_front} set_is_front={set_is_front}/>
+            <Front_back_btn is_front={is_front} set_is_front={set_is_front}/>
           </div>
           <div className="stats_about">
             <div className='app_header'>
-              <Stats_button is_stat={is_stat} set_is_stat={set_is_stat}/>
-              <Skills_button is_stat={is_stat} set_is_stat={set_is_stat}/>
+              <Stats_btn is_stat={is_stat} set_is_stat={set_is_stat}/>
+              <Skills_btn is_stat={is_stat} set_is_stat={set_is_stat}/>
             </div>
             {is_stat ? <Stat_wind/> : <Skill_wind/>}
           </div>
