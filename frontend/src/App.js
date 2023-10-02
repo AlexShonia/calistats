@@ -96,15 +96,28 @@ function Legs() {
   return <PPL_picker exercise_options={exercise_options} />;
 }
 
+let j = 0
+
 function Add_exercise_btn({exercise_count, set_exercise_count}) {
   function handle_click() {
-    const list = exercise_count.slice()
-    list.push("1")
+    const list = [...exercise_count]
+    j++
+    list.push(j)
     set_exercise_count(list)
   }
-
   return (
     <button className='add_exercise' onClick={handle_click}>+</button>
+  )
+}
+
+function Delete_exercise_btn({exercise_count, set_exercise_count, index}) {
+  function handle_click() {
+    const list = [...exercise_count]
+    list.splice(index, 1)
+    set_exercise_count(list)
+  }
+  return (
+    <button onClick={handle_click} className='delete_exercise'>x</button>
   )
 }
 
@@ -113,32 +126,29 @@ function PPL_picker({ exercise_options }) {
   return(
     <>
       <div className='ppl_window'>
-        <div className='ppl_exercise'>
+        <div className='ppl_header'>
           <div>Exercise</div>
-          {exercise_count.map((i) => (
-              <select>
-              {exercise_options.map((option) => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>
-          ))}
-          <div id="btn_div">
-            <Add_exercise_btn exercise_count={exercise_count} set_exercise_count={set_exercise_count}/>
-          </div>
-        </div>
-        <div className='ppl_input'>
           <div>reps/seconds</div>
-          {exercise_count.map((i) => (
-            <input></input> 
-          ))}
+          <div id='level'>level</div>
         </div>
-        <div className='ppl_level'>
-          <div>level</div>
-          {exercise_count.map((i) => (
-            <div>5</div>
-          ))}
-        </div>
+      {exercise_count.map((i, index) => (
+          <div className='ppl_row' key={i}>
+            <select>
+            {exercise_options.map((option) => (
+              <option key={option}>{option}</option>
+            ))}
+            </select>
+            <input></input>
+            <div>
+              <div>{i}</div>
+              <Delete_exercise_btn exercise_count={exercise_count} set_exercise_count={set_exercise_count} index={index}/>
+            </div>
+          </div>
+        ))}
+      <div id="btn_div">
+        <Add_exercise_btn exercise_count={exercise_count} set_exercise_count={set_exercise_count}/>
       </div>
+    </div>  
     <div id='total'>
       <h3>total</h3>
       <div>69</div>

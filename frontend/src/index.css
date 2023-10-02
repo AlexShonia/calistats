@@ -93,12 +93,103 @@ code {
   font-size: 3vh;
 }
 
+.ppl_window {
+  display: flex;
+  height: 65vh;
+  flex-direction: column;
+  gap: 0.5vh;
+}
+
 .ppl_header {
   display: flex;
   justify-content: space-around;
 }
 
-.ppl_picker {
+.ppl_header div{
+  width: 15vw;
+}
+
+#level {
+  width: 10vw;
+}
+
+.ppl_row {
   display: flex;
   justify-content: space-around;
 }
+
+
+
+.ppl_row select {
+  width: 15vw;
+  height: 6vh;
+  box-sizing: border-box;
+}
+
+.ppl_row input {
+  width: 15vw;
+  height: 6vh;
+  box-sizing: border-box;
+}
+
+.ppl_row div {
+  width: 10vw;
+  display: flex;
+}
+
+.delete_exercise {
+  width: 3vh;
+  height: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0;
+  font-size: 2.5vh;
+  box-sizing: border-box;
+}
+
+#btn_div {
+  margin-left: 3.8vh;
+  width: 6vh;
+}
+
+.add_exercise {
+  height: 6vh;
+  width: 6vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#total {
+  height: 15vh;
+  display: flex;
+  justify-content: right;
+  gap: 1vw;
+}
+
+#total h3{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12.5vh;
+  height: 12.5vh;
+  margin: 0;
+  font-size: 5vh;
+}
+
+#total div {
+  background-color: white;
+  width: 12.5vh;
+  height: 12.5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.5vh solid rgb(53, 47, 47);
+  border-radius: 15%;
+  margin-right: 1vw;
+  font-size: 5vh;
+}
+
