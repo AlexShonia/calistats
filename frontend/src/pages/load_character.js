@@ -1,5 +1,13 @@
 const Load_character = () => {
-    return <h1>load it ye</h1>;
+    return (
+      <div className="authorisation">
+        <label>Character name/mail:</label>
+        <input></input>
+        <label>password</label>
+        <input></input>
+        <button>Load</button>
+      </div>
+    )
   };
   
   export default Load_character;

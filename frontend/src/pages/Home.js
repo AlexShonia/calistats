@@ -10,7 +10,6 @@ const Home = () => {
   const [is_stat, set_is_stat] = useState(true);
   const [is_front, set_is_front] =useState(true);
     return (
-      <>
       <div className="app">
           <div className="character">
             <Front_back_btn is_front={is_front} set_is_front={set_is_front}/>
@@ -23,7 +22,6 @@ const Home = () => {
             {is_stat ? <Stat_wind/> : <Skill_wind/>}
           </div>
       </div>
-      </>
     )
   };
   
