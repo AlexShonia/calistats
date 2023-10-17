@@ -8,6 +8,8 @@ import Home from "./pages/Home"
 import Header from "./pages/header"
 import Load_character from "./pages/load_character"
 
+import api from "./api";
+
 export default function App() {
   return(
       <BrowserRouter>
