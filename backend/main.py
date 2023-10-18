@@ -9,6 +9,8 @@ app = FastAPI()
 
 database = {"name" : 'alex', "mail":'alex.shonia123@gmail.com', "password":'alexus'}
 
+exercise_db = {"One arm pushups": 60, "Pushups": 20, "Planche": 80}
+
 origins = [
     "http://localhost:3000",
 ]
@@ -21,18 +23,24 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-
-class LoginBase(BaseModel):
+class LoginData(BaseModel):
     name: str
     password: str
 
 class LoginResponse(BaseModel):
     name_test: str
     password_test: str    
-                    
+
+class ExerciseData(BaseModel):
+    exercise: str
+    reps_seconds: str
+    
+class ExerciseResponse(BaseModel):
+    level: int    
+
 
 @app.post("/load_character/", response_model=LoginResponse)
-async def login(login_data: LoginBase):
+async def login(login_data: LoginData):
     response = LoginResponse(name_test="wrong name", password_test="wrong password")
 
     if database["name"] == login_data.name:
@@ -44,3 +52,14 @@ async def login(login_data: LoginBase):
     print(response)
 
     return response
+
+@app.post("/", response_model=ExerciseResponse)
+async def calculate(data : ExerciseData):
+    response = ExerciseResponse(level=0)
+
+    if data.exercise != "":
+        response.level = exercise_db[data.exercise]
+        print(response.level)
+    return response    
+    
+    

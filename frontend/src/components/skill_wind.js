@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import api from "../api";
 
 function Skill_wind() {
     const [is_all, set_is_all] = useState(true);
@@ -53,20 +54,8 @@ function Legs() {
     return <PPL_picker exercise_options={exercise_options}/>;
     }
 
-function Add_exercise_btn({exercise_count, set_exercise_count, exercise_key, set_exercise_key}) {
-    function handle_click() {
-        const list = [...exercise_count]
-        set_exercise_key(exercise_key + 1)
-        list.push(exercise_key)
-        set_exercise_count(list)
-    }
-    return (
-        <button className='add_exercise' onClick={handle_click}>+</button>
-    )
-    }
-    
-    function Delete_exercise_btn({exercise_count, set_exercise_count, index}) {
-    function handle_click() {
+function Delete_exercise_btn({exercise_count, set_exercise_count, index}) {
+  function handle_click() {
         const list = [...exercise_count]
         list.splice(index, 1)
         set_exercise_count(list)
@@ -75,11 +64,54 @@ function Add_exercise_btn({exercise_count, set_exercise_count, exercise_key, set
         <button onClick={handle_click} className='delete_exercise'>x</button>
     )
     }
+
+function Add_exercise_btn({exercise_count, set_exercise_count, exercise_key, set_exercise_key}) {
+  function handle_click() {
+      const list = [...exercise_count]
+      set_exercise_key(exercise_key + 1)
+      list.push(exercise_key)
+      set_exercise_count(list)
+  }
+  return (
+      <button className='add_exercise' onClick={handle_click}>+</button>
+  )
+}
+
+function Calculate_btn({exerciseData, setTotalResponse}){
+ 
+
+  const handleSubmit = async (event) => {
+    const response = await api.post("/", exerciseData);
+    setTotalResponse(response.data.level)
+    console.log(response.data.level)
+  };
+
+  // useEffect(() => {
+  //   handleSubmit();
+  // }, [exerciseData]);
+  
+  return(
+    <button className='calculate_btn' onClick={handleSubmit}>Calculate</button>
+  )
+}
+      
     
 function PPL_picker({ exercise_options}) {
   const [exercise_count, set_exercise_count] = useState([])
   const [exercise_key, set_exercise_key] = useState(0)
+  const [exerciseData, setExerciseData] = useState({
+    exercise: "",
+    reps_seconds: "",
+  })
+  const [totalResponse, setTotalResponse] = useState(0)
 
+  const handleExerciseChange = (event) => {
+    const value = event.target.value
+    setExerciseData({
+      ...exerciseData,
+      [event.target.name]: value,
+    });
+  }
   return(
     <>
       <div className='ppl_window'>
@@ -90,7 +122,10 @@ function PPL_picker({ exercise_options}) {
         </div>
       {exercise_count.map((i, index) => (
           <div className='ppl_row' key={i}>
-            <select>
+            <select 
+            onChange={handleExerciseChange}
+            value={exerciseData.exercise}
+            name="exercise">
             {exercise_options.map((option) => (
               <option key={option}>{option}</option>
             ))}
@@ -110,11 +145,15 @@ function PPL_picker({ exercise_options}) {
          exercise_count={exercise_count} set_exercise_count={set_exercise_count}
          exercise_key={exercise_key} set_exercise_key={set_exercise_key}
          />
+        <Calculate_btn 
+        exerciseData={exerciseData} 
+        setTotalResponse={setTotalResponse}/>
       </div>
+      
     </div>  
     <div id='total'>
       <h3>total</h3>
-      <div>69</div>
+      <div>{totalResponse}</div>
     </div>
     </>
   )

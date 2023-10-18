@@ -10,6 +10,8 @@ import Load_character from "./pages/load_character"
 
 import api from "./api";
 
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
 export default function App() {
   return(
       <BrowserRouter>
@@ -24,5 +26,5 @@ export default function App() {
   )
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+
+root.render(<App/>);

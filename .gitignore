@@ -1,3 +1,4 @@
 # Exclude virtual environment
 /backend/.venv/
+# Exclude pycache
 /backend/__pycache__

@@ -1,10 +1,10 @@
-import api from "../api";
 import React, {useState} from 'react';
+import api from "../api";
 
 
 const Load_character = () => {
   const [error, setError] = useState({})
-  const [formData, setFormData] = useState({
+  const [loadData, setloadData] = useState({
     name: "",
     password: "",
   });
@@ -12,20 +12,18 @@ const Load_character = () => {
   
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await api.post("/load_character/", formData);
-    setFormData({
+    const response = await api.post("/load_character/", loadData);
+    setloadData({
       name: "",
       password: "",
     })
     setError(response.data)
-    console.log(response.data)
   };
 
   const handleInputChange = (event) => {
     const value = event.target.value;
-    console.log(value)
-    setFormData({
-      ...formData,
+    setloadData({
+      ...loadData,
       [event.target.name]: value,
     });
   };
@@ -33,10 +31,10 @@ const Load_character = () => {
     return (
       <div className="authorisation">
         <label>Character name/mail:</label>
-        <input name="name" onChange={handleInputChange} value={formData.name}></input>
+        <input name="name" onChange={handleInputChange} value={loadData.name}></input>
         <div>{error.name_test}</div>
         <label>password</label>
-        <input name="password" onChange={handleInputChange} value={formData.password}></input>
+        <input name="password" onChange={handleInputChange} value={loadData.password}></input>
         <div>{error.password_test}</div>
         <button onClick={handleSubmit}>Load</button>
       </div>
