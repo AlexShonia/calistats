@@ -33,7 +33,7 @@ class LoginResponse(BaseModel):
 
 class ExerciseItem(BaseModel):
     exercise: str
-    reps_seconds: str
+    reps_seconds: int
 
 class ExerciseData(BaseModel):
     exerciseData: List[ExerciseItem]
@@ -62,6 +62,7 @@ async def calculate(data : ExerciseData):
 
     print(data)
     sum = 0
+    
     for item in data.exerciseData:
         if item.exercise != "Select an exercise":
             sum += exercise_db[item.exercise]

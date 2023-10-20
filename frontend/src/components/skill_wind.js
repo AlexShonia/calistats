@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import api from "../api";
 
 function Skill_wind() {
@@ -50,28 +50,32 @@ function Legs() {
     return <PPL_windows exercise_options={exercise_options}/>;
     }
 
-function Delete_exercise_btn({exercise_count, set_exercise_count, index,exerciseData, setExerciseData}) {
+function Delete_exercise_btn({index, exerciseData, setExerciseData}) {
   function handle_click() {
-        const list = [...exercise_count]
+        const list = [...exerciseData]
         list.splice(index, 1)
-        set_exercise_count(list)
-
-        const data = exerciseData
-        data.splice(index, 1)
-        setExerciseData(data)
+        setExerciseData(list)
+        console.log(list)
     } 
     return (
         <button onClick={handle_click} className='delete_exercise'>x</button>
     )
     }
 
-function Add_exercise_btn({exercise_count, set_exercise_count, exercise_key, set_exercise_key}) {
+function Add_exercise_btn({exerciseData, setExerciseData, exercise_key, set_exercise_key}) {
   function handle_click() {
-      const list = [...exercise_count]
+      const list = [...exerciseData]
       set_exercise_key(exercise_key + 1)
-      list.push(exercise_key)
-      set_exercise_count(list)
+      list.push({
+      exercise: "Select an exercise",
+      reps_seconds: 0,
+      key : exercise_key,})
+
+      setExerciseData(list)
+      console.log(list)
+
   }
+
   return (
       <button className='add_exercise' onClick={handle_click}>+</button>
   )
@@ -79,10 +83,11 @@ function Add_exercise_btn({exercise_count, set_exercise_count, exercise_key, set
 
 function Calculate_btn({exerciseData, setTotalResponse}){
   const handleSubmit = async (event) => {
-    const data = {"exerciseData": [...exerciseData]}
-    for(let i =0; i < data.exerciseData.length; i++){
-      console.log(data.exerciseData[i].exercise)
-    }
+
+    let filteredData = exerciseData.filter(item => item.exercise !== "Select an exercise")
+    console.log(filteredData)
+    const data = {"exerciseData": [...filteredData]}
+    
     const response = await api.post("/", data);
     setTotalResponse(Math.round(response.data.level))
   };
@@ -94,13 +99,8 @@ function Calculate_btn({exerciseData, setTotalResponse}){
       
     
 function PPL_windows({ exercise_options}) {
-  const [exercise_count, set_exercise_count] = useState([])
   const [exercise_key, set_exercise_key] = useState(0)
-  const [exerciseData, setExerciseData] = useState([{
-    exercise: "",
-    reps_seconds: "",
-    key : 0,
-  }])
+  const [exerciseData, setExerciseData] = useState([])
   const [totalResponse, setTotalResponse] = useState(0)
 
   const handleExerciseChange = (event, index) => {
@@ -109,26 +109,13 @@ function PPL_windows({ exercise_options}) {
     
     let isValid = true
     for(let i =0; i < updatedExerciseData.length; i++){
-      if(updatedExerciseData[i] && value == updatedExerciseData[i].exercise){
+      if(updatedExerciseData[i] && value == updatedExerciseData[i].exercise && value != "Select an exercise"){
+        updatedExerciseData[index].exercise = "Select an exercise"
         isValid = false
     }}
 
-    if(value == "Select an exercise"){
-      updatedExerciseData.splice(index, 1)
-      let count = exercise_count
-      count.splice(index, 1)
-      set_exercise_count(count)
-      console.log(index)
-      console.log(exercise_count)
-      isValid = false
-    }
-
     if(isValid){
-      updatedExerciseData[index] = {
-        exercise: event.target.value,
-        reps_seconds: "",
-      }
-      
+      updatedExerciseData[index].exercise = event.target.value
       setExerciseData(
         updatedExerciseData
       );
@@ -145,8 +132,8 @@ function PPL_windows({ exercise_options}) {
           <div>reps/seconds</div>
           <div id='level'>level</div>
         </div>
-        {exercise_count.map((i, index) => (
-        <div className='ppl_row' key={i}>
+        {exerciseData.map((i, index) => (
+        <div className='ppl_row' key={i.key}>
           <select 
           onChange={(e) => {handleExerciseChange(e, index)}}
           name="exercise"
@@ -157,20 +144,18 @@ function PPL_windows({ exercise_options}) {
           </select>
           <input></input>
           <div>
-            <div>{i}</div>
+            <div>{i.key}</div>
             <Delete_exercise_btn 
-              exercise_count={exercise_count} set_exercise_count={set_exercise_count}
+              exerciseData={exerciseData} setExerciseData={setExerciseData}
               index={index}
-              setExerciseData={setExerciseData}
-              exerciseData={exerciseData}
               />
           </div>
         </div>
         ))}
       <div id="btn_div">
         <Add_exercise_btn
-         exercise_count={exercise_count} set_exercise_count={set_exercise_count}
-         exercise_key={exercise_key} set_exercise_key={set_exercise_key}
+        exerciseData={exerciseData} setExerciseData={setExerciseData}
+        exercise_key={exercise_key} set_exercise_key={set_exercise_key}
          />
         <Calculate_btn 
         exerciseData={exerciseData} 
