@@ -9,7 +9,7 @@ app = FastAPI()
 
 database = {"name" : 'alex', "mail":'alex.shonia123@gmail.com', "password":'alexus'}
 
-exercise_db = {"One arm pushups": 60, "Pushups": 20, "Planche": 80}
+exercise_db = {"One arm pushups": 48, "Pushups": 8, "Planche": 68}
 
 origins = [
     "http://localhost:3000",
@@ -62,11 +62,22 @@ async def calculate(data : ExerciseData):
 
     print(data)
     sum = 0
-    
+    individual_levels = []
+
     for item in data.exerciseData:
-        if item.exercise != "Select an exercise":
-            sum += exercise_db[item.exercise]
-            response.level = sum / len(data.exerciseData)
+        level = 0
+        if item.reps_seconds >= 12:
+            level = exercise_db[item.exercise] + 12
+        elif item.reps_seconds == 0:
+            level = 0
+        else:    
+            level = exercise_db[item.exercise] + item.reps_seconds
+
+        individual_levels.append(level)
+
+    for level in individual_levels:
+        sum+= level
+        response.level = sum / len(data.exerciseData)
 
     return response    
     

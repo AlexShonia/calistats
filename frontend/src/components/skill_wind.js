@@ -121,9 +121,17 @@ function PPL_windows({ exercise_options}) {
       );
     }
     console.log(updatedExerciseData)
+  };
 
+  const handleInputChange = (event, index) => {
+    const value = event.target.value;
+    const updatedExerciseData =[...exerciseData]
+    updatedExerciseData[index].reps_seconds = value
 
-  }
+    setExerciseData(updatedExerciseData);
+    console.log(updatedExerciseData)
+  };
+
   return(
     <>
       <div className='ppl_window'>
@@ -142,7 +150,7 @@ function PPL_windows({ exercise_options}) {
             <option key={option}>{option}</option>
           ))}
           </select>
-          <input></input>
+          <input onChange={(e) => {handleInputChange(e, index)}}></input>
           <div>
             <div>{i.key}</div>
             <Delete_exercise_btn 
