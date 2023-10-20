@@ -31,12 +31,15 @@ class LoginResponse(BaseModel):
     name_test: str
     password_test: str    
 
-class ExerciseData(BaseModel):
+class ExerciseItem(BaseModel):
     exercise: str
     reps_seconds: str
+
+class ExerciseData(BaseModel):
+    exerciseData: List[ExerciseItem]
     
 class ExerciseResponse(BaseModel):
-    level: int    
+    level: float    
 
 
 @app.post("/load_character/", response_model=LoginResponse)
@@ -57,9 +60,13 @@ async def login(login_data: LoginData):
 async def calculate(data : ExerciseData):
     response = ExerciseResponse(level=0)
 
-    if data.exercise != "":
-        response.level = exercise_db[data.exercise]
-        print(response.level)
+    print(data)
+    sum = 0
+    for item in data.exerciseData:
+        if item.exercise != "Select an exercise":
+            sum += exercise_db[item.exercise]
+            response.level = sum / len(data.exerciseData)
+
     return response    
     
     
