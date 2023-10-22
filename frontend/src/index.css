@@ -1,3 +1,7 @@
+:root {
+  --background-color: rgb(245, 234, 203);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +9,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-color);
 }
 
 code {
@@ -19,7 +24,7 @@ code {
   width: 25vw;
   height: 8vh;
   padding: 0;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(240, 220, 157);
   border-radius: 3px;
   border: 1px solid #000;
   color: black;
@@ -31,7 +36,7 @@ code {
 }
 
 .header {
-  background-color: aqua;
+  background-color: var(--background-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,7 +51,9 @@ code {
 }
 
 .character {
-  background-color: blue;
+  background-color: var(--background-color);
+  border-right: solid gray 2px;
+  box-sizing: border-box;
   width: 50vw;
   height: 90vh;
   display: flex;
@@ -61,7 +68,7 @@ code {
 }
 
 .stats_about {
-  background-color: red;
+  background-color: var(--background-color);
   width: 50vw;
   height: 90vh;
 }
@@ -103,6 +110,15 @@ code {
   font-size: 3vh;
 }
 
+.skills button.clicked {
+  width: 12.5vw;
+  height: 5vh;
+  font-size: 3vh;
+  border: solid gray 1px;
+  border-bottom: none;
+  background-color: var(--background-color);
+}
+
 .ppl_window {
   display: flex;
   height: 65vh;
@@ -136,10 +152,30 @@ code {
   box-sizing: border-box;
 }
 
-.ppl_row input {
+.ppl_row .input {
   width: 15vw;
   height: 6vh;
   box-sizing: border-box;
+}
+
+.ppl_row .input input{
+  width: 12vw;
+  height: 6vh;
+  box-sizing: border-box;
+}
+
+.increse_decrease {
+  display: flex;
+  flex-direction: column;
+  height: 6vh;
+}
+
+.increse_decrease button{
+  width: 3vh;
+  height: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ppl_row div {
@@ -157,6 +193,8 @@ code {
   padding: 0;
   font-size: 2.5vh;
   box-sizing: border-box;
+  background-color: var(--background-color);
+  border: solid gray 1px;
 }
 
 #btn_div {
@@ -171,6 +209,9 @@ code {
   justify-content: center;
   align-items: center;
   text-align: center;
+  background-color: var(--background-color);
+  border: solid gray 2px;
+  font-size: 3vh;
 }
 
 #total {
@@ -180,7 +221,7 @@ code {
   gap: 1vw;
 }
 
-#total h3{
+#total h3 {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -210,4 +251,5 @@ code {
   justify-content: center;
   align-items: center;
   gap: 2vh;
+  background-color: var(--background-color);
 }

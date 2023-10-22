@@ -66,18 +66,21 @@ async def calculate(data : ExerciseData):
 
     for item in data.exerciseData:
         level = 0
-        if item.reps_seconds >= 12:
+        if item.reps_seconds == 0:
+            pass
+        elif item.reps_seconds >= 12:
             level = exercise_db[item.exercise] + 12
-        elif item.reps_seconds == 0:
-            level = 0
+            individual_levels.append(level)
         else:    
             level = exercise_db[item.exercise] + item.reps_seconds
+            individual_levels.append(level)
 
-        individual_levels.append(level)
+        
 
+    print(individual_levels)
     for level in individual_levels:
         sum+= level
-        response.level = sum / len(data.exerciseData)
+        response.level = sum / len(individual_levels)
 
     return response    
     
