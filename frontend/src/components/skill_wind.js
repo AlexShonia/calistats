@@ -98,6 +98,7 @@ function Add_exercise_btn({
       exercise: "Select an exercise",
       reps_seconds: 0,
       key: exercise_key,
+      level: 0
     });
 
     setExerciseData(list);
@@ -111,16 +112,27 @@ function Add_exercise_btn({
   );
 }
 
-function Calculate_btn({ exerciseData, setTotalResponse }) {
+function Calculate_btn({ exerciseData,setExerciseData, setTotalResponse }) {
   const handleSubmit = async (event) => {
     let filteredData = exerciseData.filter(
       (item) => item.exercise !== "Select an exercise"
     );
-    console.log(filteredData);
     const data = { exerciseData: [...filteredData] };
 
-    const response = await api.post("/", data);
-    setTotalResponse(Math.round(response.data.level));
+    const response = await api.post("/calculate", data);
+    setTotalResponse(Math.round(response.data.total_level));
+
+    let updatedExerciseData = exerciseData
+    for(let i = 0; i< updatedExerciseData.length; i++){
+      let exercise = updatedExerciseData[i].exercise
+      for(let j = 0; j < response.data.ind_levels.length; j++){
+        let level = response.data.ind_levels[j][exercise]
+        if(level) {
+          updatedExerciseData[i].level = level
+          console.log(updatedExerciseData)
+        }
+      }
+    }
   };
 
   return (
@@ -130,6 +142,8 @@ function Calculate_btn({ exerciseData, setTotalResponse }) {
   );
 }
 
+
+
 function PPL_windows({ exercise_options }) {
   const [exercise_key, set_exercise_key] = useState(0);
   const [exerciseData, setExerciseData] = useState([]);
@@ -137,7 +151,7 @@ function PPL_windows({ exercise_options }) {
 
   const handleExerciseChange = (event, index) => {
     const value = event.target.value;
-    const updatedExerciseData = [...exerciseData];
+    const updatedExerciseData = exerciseData;
 
     let isValid = true;
     for (let i = 0; i < updatedExerciseData.length; i++) {
@@ -160,12 +174,20 @@ function PPL_windows({ exercise_options }) {
 
   const handleInputChange = (event, index) => {
     const value = event.target.value;
-    const updatedExerciseData = [...exerciseData];
+    const updatedExerciseData = exerciseData;
     updatedExerciseData[index].reps_seconds = value;
 
     setExerciseData(updatedExerciseData);
     console.log(updatedExerciseData);
   };
+
+  function handleIncrease({exerciseData, setExerciseData}){
+    console.log(exerciseData)
+  }
+  
+  function handleDecrease({exerciseData, setExerciseData}){
+    console.log("dfsg")
+  }
 
   return (
     <>
@@ -194,12 +216,12 @@ function PPL_windows({ exercise_options }) {
                 }}
               ></input>
               <div className="increse_decrease">
-                <button>+</button>
-                <button>-</button>
+                <button onClick={() => {handleIncrease(exerciseData, setExerciseData)}}><div className="increase"></div></button>
+                <button onClick={() => {handleDecrease(exerciseData, setExerciseData)}}><div className="decrease"></div></button>
               </div>
             </div>
             <div>
-              <div>{i.key}</div>
+              <div>{i.level}</div>
               <Delete_exercise_btn
                 exerciseData={exerciseData}
                 setExerciseData={setExerciseData}
@@ -217,6 +239,7 @@ function PPL_windows({ exercise_options }) {
           />
           <Calculate_btn
             exerciseData={exerciseData}
+            setExerciseData={setExerciseData}
             setTotalResponse={setTotalResponse}
           />
         </div>

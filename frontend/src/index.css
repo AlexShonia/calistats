@@ -144,8 +144,6 @@ code {
   justify-content: space-around;
 }
 
-
-
 .ppl_row select {
   width: 15vw;
   height: 6vh;
@@ -173,11 +171,29 @@ code {
 .increse_decrease button{
   width: 3vh;
   height: 3vh;
+  padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+.increse_decrease button div{
+  width: 1vh;
+  height: 1vh;
+  border: solid black 2px;
+}
+
+.increse_decrease button .increase{
+  border-bottom: none;
+  border-right: none;
+  rotate: 45deg;
+}
+
+.increse_decrease button .decrease{
+  border-bottom: none;
+  border-right: none;
+  rotate: -135deg;
+}
 .ppl_row div {
   width: 10vw;
   display: flex;

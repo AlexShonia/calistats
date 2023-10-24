@@ -3,6 +3,8 @@ from typing import Annotated, List
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+import calculate
+import login
 
 app = FastAPI()
 
@@ -23,65 +25,6 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-class LoginData(BaseModel):
-    name: str
-    password: str
 
-class LoginResponse(BaseModel):
-    name_test: str
-    password_test: str    
-
-class ExerciseItem(BaseModel):
-    exercise: str
-    reps_seconds: int
-
-class ExerciseData(BaseModel):
-    exerciseData: List[ExerciseItem]
-    
-class ExerciseResponse(BaseModel):
-    level: float    
-
-
-@app.post("/load_character/", response_model=LoginResponse)
-async def login(login_data: LoginData):
-    response = LoginResponse(name_test="wrong name", password_test="wrong password")
-
-    if database["name"] == login_data.name:
-        response.name_test="✔️"
-
-    if database["password"] == login_data.password:
-        response.password_test = "✔️"
-
-    print(response)
-
-    return response
-
-@app.post("/", response_model=ExerciseResponse)
-async def calculate(data : ExerciseData):
-    response = ExerciseResponse(level=0)
-
-    print(data)
-    sum = 0
-    individual_levels = []
-
-    for item in data.exerciseData:
-        level = 0
-        if item.reps_seconds == 0:
-            pass
-        elif item.reps_seconds >= 12:
-            level = exercise_db[item.exercise] + 12
-            individual_levels.append(level)
-        else:    
-            level = exercise_db[item.exercise] + item.reps_seconds
-            individual_levels.append(level)
-
-        
-
-    print(individual_levels)
-    for level in individual_levels:
-        sum+= level
-        response.level = sum / len(individual_levels)
-
-    return response    
-    
-    
+app.include_router(login.api_router, prefix="/load_character")
+app.include_router(calculate.api_router, prefix="/calculate")
