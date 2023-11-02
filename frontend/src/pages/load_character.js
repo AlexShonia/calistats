@@ -10,7 +10,7 @@ const Load_character = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await api.post("/load_character/", loadData);
+    const response = await api.post("/login/", loadData);
     setloadData({
       name: "",
       password: "",

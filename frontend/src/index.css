@@ -35,6 +35,13 @@ code {
   align-items: center;
 }
 
+.app_button {
+  background-color:rgb(240, 220, 157);
+  border: gray 1px solid;
+  font-size: 3vh;
+  height: 5vh;
+}
+
 .header {
   background-color: var(--background-color);
   display: flex;
@@ -52,7 +59,8 @@ code {
 
 .character {
   background-color: var(--background-color);
-  border-right: solid gray 2px;
+  border-right: solid gray 1px;
+  border-top: solid gray 1px;
   box-sizing: border-box;
   width: 50vw;
   height: 90vh;
@@ -60,11 +68,13 @@ code {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 2vh;
 }
 
+
 .character img {
-  width: 30vw;
-  height: 30vw;
+  width: 35vw;
+  height: 35vw;
 }
 
 .stats_about {
@@ -81,7 +91,6 @@ code {
 .app_header button {
   width: 25vw;
   height: 5vh;
-  font-size: 3vh;
 }
 
 .stats {
@@ -106,8 +115,6 @@ code {
 
 .skills button {
   width: 12.5vw;
-  height: 5vh;
-  font-size: 3vh;
 }
 
 .skills button.clicked {
@@ -137,6 +144,8 @@ code {
 
 #level {
   width: 10vw;
+  display: flex;
+  align-items: center;
 }
 
 .ppl_row {
@@ -178,9 +187,9 @@ code {
 }
 
 .increse_decrease button div{
-  width: 1vh;
-  height: 1vh;
-  border: solid black 2px;
+  width: 1.2vh;
+  height: 1.2vh;
+  border: solid black 3px;
 }
 
 .increse_decrease button .increase{
@@ -214,8 +223,20 @@ code {
 }
 
 #btn_div {
-  margin-left: 3.8vh;
-  width: 6vh;
+  display: flex;
+  justify-content: space-around;
+}
+
+#btn_div div{
+  width: 15vw;
+}
+
+#btn_div #Fifteenvw {
+  width: 15vw;
+}
+
+#btn_div #Tenvw {
+  width: 10vw;
 }
 
 .add_exercise {
@@ -228,6 +249,7 @@ code {
   background-color: var(--background-color);
   border: solid gray 2px;
   font-size: 3vh;
+  margin-bottom: 0.5vh;
 }
 
 #total {

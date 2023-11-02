@@ -1,13 +1,51 @@
+import { useState } from "react";
+import api from "../api";
+
 const Create_character = () => {
+  const [error, setError] = useState();
+  const [loadData, setloadData] = useState({
+    name: "",
+    password: "",
+  });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await api.post("/register", loadData);
+      setloadData({
+        name: "",
+        password: "",
+      });
+      setError("");
+    } catch (error) {
+      setError(error.response.data.detail);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setloadData({
+      ...loadData,
+      [event.target.name]: value,
+    });
+  };
+
   return (
     <div className="authorisation">
-      <label>Character name</label>
-      <input></input>
-      <label>Mail</label>
-      <input></input>
+      <label>Character name/mail:</label>
+      <input
+        name="name"
+        onChange={handleInputChange}
+        value={loadData.name}
+      ></input>
       <label>Password</label>
-      <input></input>
-      <button>Create</button>
+      <input
+        name="password"
+        onChange={handleInputChange}
+        value={loadData.password}
+      ></input>
+      <div>{error}</div>
+      <button onClick={handleSubmit}>Create</button>
     </div>
   );
 };

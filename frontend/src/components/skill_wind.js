@@ -9,7 +9,7 @@ function Skill_wind() {
       <div className="skills">
         {windows.map((window, index) => (
           <button
-            className={curWind === window ? "clicked" : ""}
+            className={curWind === window ? "clicked" : "app_button"}
             onClick={() => {
               setCurWind(windows[index]);
             }}
@@ -76,7 +76,6 @@ function Delete_exercise_btn({ index, exerciseData, setExerciseData }) {
     const list = [...exerciseData];
     list.splice(index, 1);
     setExerciseData(list);
-    console.log(list);
   }
   return (
     <button onClick={handle_click} className="delete_exercise">
@@ -98,11 +97,10 @@ function Add_exercise_btn({
       exercise: "Select an exercise",
       reps_seconds: 0,
       key: exercise_key,
-      level: 0
+      level: 0,
     });
 
     setExerciseData(list);
-    console.log(list);
   }
 
   return (
@@ -112,7 +110,7 @@ function Add_exercise_btn({
   );
 }
 
-function Calculate_btn({ exerciseData,setExerciseData, setTotalResponse }) {
+function Calculate_btn({ exerciseData, setExerciseData, setTotalResponse }) {
   const handleSubmit = async (event) => {
     let filteredData = exerciseData.filter(
       (item) => item.exercise !== "Select an exercise"
@@ -122,27 +120,24 @@ function Calculate_btn({ exerciseData,setExerciseData, setTotalResponse }) {
     const response = await api.post("/calculate", data);
     setTotalResponse(Math.round(response.data.total_level));
 
-    let updatedExerciseData = exerciseData
-    for(let i = 0; i< updatedExerciseData.length; i++){
-      let exercise = updatedExerciseData[i].exercise
-      for(let j = 0; j < response.data.ind_levels.length; j++){
-        let level = response.data.ind_levels[j][exercise]
-        if(level) {
-          updatedExerciseData[i].level = level
-          console.log(updatedExerciseData)
+    let updatedExerciseData = exerciseData;
+    for (let i = 0; i < updatedExerciseData.length; i++) {
+      let exercise = updatedExerciseData[i].exercise;
+      for (let j = 0; j < response.data.ind_levels.length; j++) {
+        let level = response.data.ind_levels[j][exercise];
+        if (level) {
+          updatedExerciseData[i].level = level;
         }
       }
     }
   };
 
   return (
-    <button className="calculate_btn" onClick={handleSubmit}>
+    <button className="calculate_btn app_button" onClick={handleSubmit}>
       Calculate
     </button>
   );
 }
-
-
 
 function PPL_windows({ exercise_options }) {
   const [exercise_key, set_exercise_key] = useState(0);
@@ -169,24 +164,26 @@ function PPL_windows({ exercise_options }) {
       updatedExerciseData[index].exercise = event.target.value;
       setExerciseData(updatedExerciseData);
     }
-    console.log(updatedExerciseData);
   };
 
   const handleInputChange = (event, index) => {
     const value = event.target.value;
-    const updatedExerciseData = exerciseData;
+    const updatedExerciseData = [...exerciseData];
     updatedExerciseData[index].reps_seconds = value;
 
     setExerciseData(updatedExerciseData);
-    console.log(updatedExerciseData);
   };
 
-  function handleIncrease({exerciseData, setExerciseData}){
-    console.log(exerciseData)
+  function handleIncrease(e, index) {
+    let updatedExerciseData = [...exerciseData];
+    updatedExerciseData[index].reps_seconds++;
+    setExerciseData(updatedExerciseData);
   }
-  
-  function handleDecrease({exerciseData, setExerciseData}){
-    console.log("dfsg")
+
+  function handleDecrease(e, index) {
+    let updatedExerciseData = [...exerciseData];
+    updatedExerciseData[index].reps_seconds--;
+    setExerciseData(updatedExerciseData);
   }
 
   return (
@@ -211,17 +208,30 @@ function PPL_windows({ exercise_options }) {
             </select>
             <div className="input">
               <input
+                value={i.reps_seconds}
                 onChange={(e) => {
                   handleInputChange(e, index);
                 }}
               ></input>
               <div className="increse_decrease">
-                <button onClick={() => {handleIncrease(exerciseData, setExerciseData)}}><div className="increase"></div></button>
-                <button onClick={() => {handleDecrease(exerciseData, setExerciseData)}}><div className="decrease"></div></button>
+                <button
+                  onClick={(e) => {
+                    handleIncrease(e, index);
+                  }}
+                >
+                  <div className="increase"></div>
+                </button>
+                <button
+                  onClick={(e) => {
+                    handleDecrease(e, index);
+                  }}
+                >
+                  <div className="decrease"></div>
+                </button>
               </div>
             </div>
             <div>
-              <div>{i.level}</div>
+              <div id="level">{i.level}</div>
               <Delete_exercise_btn
                 exerciseData={exerciseData}
                 setExerciseData={setExerciseData}
@@ -231,17 +241,21 @@ function PPL_windows({ exercise_options }) {
           </div>
         ))}
         <div id="btn_div">
-          <Add_exercise_btn
-            exerciseData={exerciseData}
-            setExerciseData={setExerciseData}
-            exercise_key={exercise_key}
-            set_exercise_key={set_exercise_key}
-          />
-          <Calculate_btn
-            exerciseData={exerciseData}
-            setExerciseData={setExerciseData}
-            setTotalResponse={setTotalResponse}
-          />
+          <div>
+            <Add_exercise_btn
+              exerciseData={exerciseData}
+              setExerciseData={setExerciseData}
+              exercise_key={exercise_key}
+              set_exercise_key={set_exercise_key}
+            />
+            <Calculate_btn
+              exerciseData={exerciseData}
+              setExerciseData={setExerciseData}
+              setTotalResponse={setTotalResponse}
+            />
+          </div>
+          <div id="Fifteenvw"/>
+          <div id="Tenvw"/>
         </div>
       </div>
       <div id="total">

@@ -1,10 +1,12 @@
 from fastapi import FastAPI, HTTPException, Depends
 from typing import Annotated, List
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from database import SessionLocal, engine
+import models
 import calculate
 import login
+import register
 
 app = FastAPI()
 
@@ -25,6 +27,17 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-app.include_router(login.api_router, prefix="/load_character")
+db_dependency = Annotated[Session, Depends(get_db)]
+
+models.Base.metadata.create_all(bind=engine)
+
+app.include_router(login.api_router, prefix="/login")
 app.include_router(calculate.api_router, prefix="/calculate")
+app.include_router(register.api_router, prefix="/register")
