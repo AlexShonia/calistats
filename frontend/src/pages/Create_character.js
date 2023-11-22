@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
 
 const Create_character = () => {
@@ -7,16 +8,18 @@ const Create_character = () => {
     name: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.post("/register", loadData);
+      const response = await api.post("/register/", loadData);
       setloadData({
         name: "",
         password: "",
       });
       setError("");
+      navigate("/load_character");
     } catch (error) {
       setError(error.response.data.detail);
     }

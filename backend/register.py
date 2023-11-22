@@ -31,12 +31,7 @@ async def register(register_data: RegisterResponse, db: db_dependency):
         db.add(db_register)
         db.commit()
         db.refresh(db_register)
-        params = {"username" : "kuku"}
-        query = text('SELECT * FROM users WHERE name= :username')
-        row = db.execute(query, params).fetchone()
-        
-        print(row)
-        return db_register
+        raise HTTPException(status_code=200, detail="Succ cess")
     
     except IntegrityError:
         raise HTTPException(status_code=404, detail="Name Occupied")

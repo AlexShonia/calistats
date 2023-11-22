@@ -1,5 +1,16 @@
 :root {
   --background-color: rgb(245, 234, 203);
+  --speed: 500ms;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
 }
 
 body {
@@ -33,7 +44,14 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: filter 300ms;
 }
+
+.button:hover {
+  filter: brightness(1.2);
+  cursor: pointer;
+}
+
 
 .app_button {
   background-color:rgb(240, 220, 157);
@@ -50,6 +68,35 @@ code {
   height: 10vh;
 }
 
+.header button {
+  width: 8vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1vh;
+  border: 0.6vh solid #000;
+  border-radius: 15%;
+  transition: filter 300ms;
+}
+
+.dropdown {
+  position: absolute;
+  top: 9vh;
+  left: 0;
+  width: 35vw;
+  height: 50vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+}
+
+.header button div {
+  background-color: black;
+  width: 5vh;
+  height: 0.7vh;
+  border-radius: 25%;
+}
 .app {
   display: flex;
   align-items: center;

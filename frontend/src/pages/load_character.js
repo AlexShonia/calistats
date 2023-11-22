@@ -1,21 +1,27 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
 
 const Load_character = () => {
-  const [error, setError] = useState({});
+  const [error, setError] = useState();
   const [loadData, setloadData] = useState({
     name: "",
     password: "",
   });
+  const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await api.post("/login/", loadData);
-    setloadData({
-      name: "",
-      password: "",
-    });
-    setError(response.data);
+    try {
+      const response = await api.post("/login/", loadData);
+      setloadData({
+        name: "",
+        password: "",
+      });
+      navigate("/")
+    } catch (error) {
+      setError(error.response.data.detail);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -34,14 +40,13 @@ const Load_character = () => {
         onChange={handleInputChange}
         value={loadData.name}
       ></input>
-      <div>{error.name_test}</div>
       <label>password</label>
       <input
         name="password"
         onChange={handleInputChange}
         value={loadData.password}
       ></input>
-      <div>{error.password_test}</div>
+      <div>{error}</div>
       <button onClick={handleSubmit}>Load</button>
     </div>
   );

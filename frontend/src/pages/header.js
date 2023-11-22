@@ -1,30 +1,42 @@
-// import styled from "styled-components";
 import { Outlet, Link } from "react-router-dom";
+import React, { useState } from "react";
 
-// const HeaderStyled = styled.div`
-//   background-color: aqua;
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   height: 10vh;
-// `;
 const Header = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <>
       <div className="header">
-        <Link to="/load_character" className="button">
-          Load Character
-        </Link>
+        <button className="button" onClick={() => setOpen(!open)}>
+          <div />
+          <div />
+          <div />
+        </button>
+        {open ? <DropDownMenu /> : ""}
         <Link to="/" className="button">
           Home
         </Link>
-        <Link to="/create_character" className="button">
-          Create Character
-        </Link>
+        <div>
+          Gali Kunti
+          <div>😄</div>
+        </div>
       </div>
       <Outlet />
     </>
   );
 };
+
+function DropDownMenu() {
+  return (
+    <div className="dropdown">
+      <Link to="/create_character" className="button">
+        Create Character
+      </Link>
+      <Link to="/load_character" className="button">
+        Load Character
+      </Link>
+    </div>
+  );
+}
 
 export default Header;
