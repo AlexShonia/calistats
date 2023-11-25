@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 import api from "../api";
 
 const Load_character = () => {
@@ -9,6 +10,7 @@ const Load_character = () => {
     password: "",
   });
   const navigate = useNavigate()
+  const { login, logout } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,6 +20,7 @@ const Load_character = () => {
         name: "",
         password: "",
       });
+      login();
       navigate("/")
     } catch (error) {
       setError(error.response.data.detail);

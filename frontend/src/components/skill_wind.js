@@ -9,7 +9,7 @@ function Skill_wind() {
       <div className="skills">
         {windows.map((window, index) => (
           <button
-            className={curWind === window ? "clicked" : "app_button"}
+            className={curWind === window ? "clicked" : "button app_button"}
             onClick={() => {
               setCurWind(windows[index]);
             }}
@@ -133,7 +133,7 @@ function Calculate_btn({ exerciseData, setExerciseData, setTotalResponse }) {
   };
 
   return (
-    <button className="calculate_btn app_button" onClick={handleSubmit}>
+    <button className="button app_button" onClick={handleSubmit}>
       Calculate
     </button>
   );

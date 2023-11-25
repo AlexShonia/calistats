@@ -1,8 +1,11 @@
 import { Outlet, Link } from "react-router-dom";
 import React, { useState } from "react";
+import { useAuth } from "../AuthContext";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+
+  const { isLoggedIn, logout } = useAuth();
 
   return (
     <>
@@ -13,12 +16,12 @@ const Header = () => {
           <div />
         </button>
         {open ? <DropDownMenu /> : ""}
-        <Link to="/" className="button">
+        <Link to="/" className="button bigbtn">
           Home
         </Link>
-        <div>
-          Gali Kunti
-          <div>😄</div>
+        <div className="nameIcon">
+          {isLoggedIn ? "Gali Kunti" : "Guest"}
+          <button className="button">🗿</button>
         </div>
       </div>
       <Outlet />
@@ -27,14 +30,17 @@ const Header = () => {
 };
 
 function DropDownMenu() {
+  const {logout } = useAuth();
   return (
     <div className="dropdown">
-      <Link to="/create_character" className="button">
+      <div>MENU</div>
+      <Link to="/create_character" className="button bigbtn">
         Create Character
       </Link>
-      <Link to="/load_character" className="button">
+      <Link to="/load_character" className="button bigbtn">
         Load Character
       </Link>
+      <div className="button bigbtn" onClick={()=> logout()}>Logout</div>
     </div>
   );
 }
