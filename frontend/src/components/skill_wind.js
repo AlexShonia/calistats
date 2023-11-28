@@ -117,7 +117,7 @@ function Calculate_btn({ exerciseData, setExerciseData, setTotalResponse }) {
     );
     const data = { exerciseData: [...filteredData] };
 
-    const response = await api.post("/calculate", data);
+    const response = await api.post("/calculate/", data);
     setTotalResponse(Math.round(response.data.total_level));
 
     let updatedExerciseData = exerciseData;
@@ -254,8 +254,8 @@ function PPL_windows({ exercise_options }) {
               setTotalResponse={setTotalResponse}
             />
           </div>
-          <div id="Fifteenvw"/>
-          <div id="Tenvw"/>
+          <div id="Fifteenvw" />
+          <div id="Tenvw" />
         </div>
       </div>
       <div id="total">

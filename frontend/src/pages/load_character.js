@@ -9,8 +9,9 @@ const Load_character = () => {
     name: "",
     password: "",
   });
-  const navigate = useNavigate()
-  const { login, logout } = useAuth();
+
+  const navigate = useNavigate();
+  const { login, changeName } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,7 +22,8 @@ const Load_character = () => {
         password: "",
       });
       login();
-      navigate("/")
+      changeName(response.data.detail);
+      navigate("/");
     } catch (error) {
       setError(error.response.data.detail);
     }
@@ -37,7 +39,8 @@ const Load_character = () => {
 
   return (
     <div className="authorisation">
-      <label>Character name/mail:</label>
+      <div>Login</div>
+      <label>Character name or email:</label>
       <input
         name="name"
         onChange={handleInputChange}

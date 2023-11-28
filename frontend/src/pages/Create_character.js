@@ -8,6 +8,7 @@ const Create_character = () => {
     name: "",
     password: "",
   });
+  const [value, setValue] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -26,26 +27,40 @@ const Create_character = () => {
   };
 
   const handleInputChange = (event) => {
-    const value = event.target.value;
-    setloadData({
-      ...loadData,
-      [event.target.name]: value,
-    });
+    const inputValue = event.key;
+
+    if (inputValue === "Backspace") {
+      console.log("delet");
+      setValue(value.slice(0, -1));
+      console.log(value);
+    } else if (inputValue.length > 1) {
+      console.log("not char");
+    } else {
+      setValue(value + inputValue);
+      console.log(value);
+      setloadData({
+        ...loadData,
+        [event.target.name]: value,
+      });
+    }
   };
 
   return (
     <div className="authorisation">
-      <label>Character name/mail:</label>
+      <div>Register</div>
+      <label>Character name or email:</label>
       <input
         name="name"
         onChange={handleInputChange}
         value={loadData.name}
+        placeholder="Name"
       ></input>
       <label>Password</label>
       <input
         name="password"
-        onChange={handleInputChange}
-        value={loadData.password}
+        onKeyDown={handleInputChange}
+        value={"*".repeat(value.length)}
+        placeholder="Assword"
       ></input>
       <div>{error}</div>
       <button onClick={handleSubmit}>Create</button>

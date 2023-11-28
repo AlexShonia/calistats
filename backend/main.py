@@ -10,9 +10,6 @@ import register
 
 app = FastAPI()
 
-
-database = {"name" : 'alex', "mail":'alex.shonia123@gmail.com', "password":'alexus'}
-
 exercise_db = {"One arm pushups": 48, "Pushups": 8, "Planche": 68}
 
 origins = [
@@ -27,6 +24,25 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+def seed_exercises(db: Session):
+    exercises = [
+        {"name": "One arm pushups", "level": 48},
+        {"name": "Pushups", "level": 8},
+        {"name": "Planche", "level": 68}
+    ]
+
+    for exercise in exercises:
+        existing_exercise = db.query(models.Exercises).filter_by(name=exercise["name"]).first()
+
+        if existing_exercise:
+            existing_exercise.level = exercise["level"]
+            existing_exercise.name = exercise["name"]
+        else:    
+            db_exercise = models.Exercises(**exercise)
+            db.add(db_exercise)
+
+    db.commit()
+
 def get_db():
     db = SessionLocal()
     try:
@@ -37,6 +53,7 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 models.Base.metadata.create_all(bind=engine)
+seed_exercises(SessionLocal())
 
 app.include_router(login.api_router, prefix="/login")
 app.include_router(calculate.api_router, prefix="/calculate")

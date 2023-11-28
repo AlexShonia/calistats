@@ -5,7 +5,7 @@ import { useAuth } from "../AuthContext";
 const Header = () => {
   const [open, setOpen] = useState(false);
 
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, name } = useAuth();
 
   return (
     <>
@@ -20,7 +20,7 @@ const Header = () => {
           Home
         </Link>
         <div className="nameIcon">
-          {isLoggedIn ? "Gali Kunti" : "Guest"}
+          {isLoggedIn ? name : "Guest"}
           <button className="button">🗿</button>
         </div>
       </div>

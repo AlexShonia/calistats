@@ -1,6 +1,9 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Depends
 from pydantic import BaseModel
 from typing import Annotated, List
+from sqlalchemy.orm import Session
+import models
+from database import SessionLocal
 
 api_router = APIRouter()
 
@@ -16,13 +19,25 @@ class ExerciseResponse(BaseModel):
     total_level: float    
     ind_levels: list    
 
+def get_exercise_levels(db: Session):
+    exercises = db.query(models.Exercises).all()
+    exercise_db = {exercise.name: exercise.level for exercise in exercises}
+    return exercise_db
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 
 @api_router.post("/", response_model=ExerciseResponse)
-async def calculate(data : ExerciseData):
-    from main import exercise_db
+async def calculate(data : ExerciseData,
+                    db: Session = Depends(get_db)):
+    
     response = ExerciseResponse(total_level=0, ind_levels=[])
 
-    print(data)
     sum = 0
     individual_levels = []
 
@@ -31,10 +46,10 @@ async def calculate(data : ExerciseData):
         if item.reps_seconds == 0:
             pass
         elif item.reps_seconds >= 12:
-            level = exercise_db[item.exercise] + 12
+            level = int(get_exercise_levels(db)[item.exercise]) + 12
             individual_levels.append({item.exercise:level})
         else:    
-            level = exercise_db[item.exercise] + item.reps_seconds
+            level = int(get_exercise_levels(db)[item.exercise]) + item.reps_seconds
             individual_levels.append({item.exercise:level})
 
     for dict in individual_levels:

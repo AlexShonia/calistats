@@ -38,7 +38,7 @@ async def login(login_data: LoginResponse, db: db_dependency):
         raise HTTPException(status_code=401, detail="NOSucc cess")
     else:
         print(row)
-        raise HTTPException(status_code=200, detail="Succ cess")
+        raise HTTPException(status_code=200, detail=login_data.name)
 
 
     
