@@ -45,6 +45,7 @@ const Load_character = () => {
         name="name"
         onChange={handleInputChange}
         value={loadData.name}
+        placeholder="Name"
       ></input>
       <label>password</label>
       <input
