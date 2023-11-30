@@ -8,7 +8,7 @@ const Create_character = () => {
     name: "",
     password: "",
   });
-  const [value, setValue] = useState("");
+  const [passType, setPassType] = useState(true);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -27,22 +27,12 @@ const Create_character = () => {
   };
 
   const handleInputChange = (event) => {
-    const inputValue = event.key;
-
-    if (inputValue === "Backspace") {
-      console.log("delet");
-      setValue(value.slice(0, -1));
-      console.log(value);
-    } else if (inputValue.length > 1) {
-      console.log("not char");
-    } else {
-      setValue(value + inputValue);
-      console.log(value);
-      setloadData({
-        ...loadData,
-        [event.target.name]: value,
-      });
-    }
+    const value = event.target.value;
+    setloadData({
+      ...loadData,
+      [event.target.name]: value,
+    });
+    console.log(loadData.password);
   };
 
   return (
@@ -56,12 +46,21 @@ const Create_character = () => {
         placeholder="Name"
       ></input>
       <label>Password</label>
-      <input
-        name="password"
-        onKeyDown={handleInputChange}
-        value={"*".repeat(value.length)}
-        placeholder="Assword"
-      ></input>
+      <div id="inputbutton">
+        <input
+          name="password"
+          onChange={handleInputChange}
+          value={loadData.password}
+          placeholder="Assword"
+          type={passType ? "password" : "text"}
+        ></input>
+        <button
+          onClick={() => setPassType(!passType)}
+          id={passType ? "hidden" : "shown"}
+          className="button"
+        ></button>
+      </div>
+
       <div>{error}</div>
       <button onClick={handleSubmit}>Create</button>
     </div>

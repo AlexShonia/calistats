@@ -9,6 +9,7 @@ const Load_character = () => {
     name: "",
     password: "",
   });
+  const [passType, setPassType] = useState(true)
 
   const navigate = useNavigate();
   const { login, changeName } = useAuth();
@@ -47,14 +48,24 @@ const Load_character = () => {
         value={loadData.name}
         placeholder="Name"
       ></input>
-      <label>password</label>
-      <input
-        name="password"
-        onChange={handleInputChange}
-        value={loadData.password}
-      ></input>
+      <label>Password</label>
+      <div id="inputbutton">
+        <input
+          name="password"
+          onChange={handleInputChange}
+          value={loadData.password}
+          placeholder="Assword"
+          type={passType ? "password" : "text"}
+        ></input>
+        <button
+         onClick={()=> setPassType(!passType)}
+         id={passType ? "hidden" : "shown"}
+         className="button"
+        ></button>
+      </div>
+      
       <div>{error}</div>
-      <button onClick={handleSubmit}>Load</button>
+      <button onClick={handleSubmit}>Create</button>
     </div>
   );
 };

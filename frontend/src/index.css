@@ -358,3 +358,23 @@ code {
   gap: 2vh;
   background-color: var(--background-color);
 }
+
+#inputbutton {
+  display: flex;
+  flex-direction: row;
+  height: 6vh;
+}
+
+#hidden {
+  background-image: url("assets/images/Hidden.png");
+  background-size: cover;
+  height: 6vh;
+  width: 4vw;
+}
+
+#shown {
+  background-image: url("assets/images/Shown.png");
+  background-size: cover;
+  height: 6vh;
+  width: 4vw;
+}
