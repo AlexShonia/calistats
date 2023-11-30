@@ -29,15 +29,14 @@ db_dependency = Annotated[Session, Depends(get_db)]
 @api_router.post("/", response_model=LoginResponse)
 async def login(login_data: LoginResponse, db: db_dependency):
 
-    params = {"username" : login_data.name}
-    query = text('SELECT * FROM users WHERE name= :username')
+    params = {"username" : login_data.name, "password": login_data.password}
+    query = text('SELECT * FROM users WHERE name= :username AND password = :password')
     row = db.execute(query, params).fetchone()
-    
+    print(row)
     if row == None:
         print("wrong usernmae")
         raise HTTPException(status_code=401, detail="NOSucc cess")
     else:
-        print(row)
         raise HTTPException(status_code=200, detail=login_data.name)
 
 

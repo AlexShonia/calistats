@@ -65,7 +65,7 @@ const Load_character = () => {
       </div>
       
       <div>{error}</div>
-      <button onClick={handleSubmit}>Create</button>
+      <button onClick={handleSubmit}>Load</button>
     </div>
   );
 };
