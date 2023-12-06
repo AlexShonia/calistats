@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Skill_wind from "../components/skill_wind";
 import Stat_wind from "../components/stats_wind";
-import { Stats_btn, Skills_btn } from "../components/app_side";
+import { Stats_btn, Skills_btn } from "../components/buttons";
 import Front_back_btn from "../components/character_side";
 
 const Home = () => {

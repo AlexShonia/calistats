@@ -32,7 +32,7 @@ const Header = () => {
 function DropDownMenu() {
   const {logout } = useAuth();
   return (
-    <div className="dropdown">
+    <div className="menuDropdown">
       <div>MENU</div>
       <Link to="/create_character" className="button bigbtn">
         Create Character

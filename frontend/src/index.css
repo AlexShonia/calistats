@@ -1,6 +1,6 @@
 :root {
   --background-color: rgb(245, 234, 203);
-  --speed: 500ms;
+  --speed: 400ms;
 }
 
 ul {
@@ -81,7 +81,7 @@ code {
   width: 25vw;
 }
 
-.dropdown {
+.menuDropdown {
   position: absolute;
   top: 10vh;
   left: 0;
@@ -226,6 +226,69 @@ code {
   box-sizing: border-box;
 }
 
+#exerciseDropDown {
+  position: absolute;
+  z-index: 1;
+  width: 14vw;
+  height: 39vh;
+  top: 6vh;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  overflow-y: auto;
+  transition: height var(--speed) ease;
+}
+
+.exerciseDropDown button {
+  width: 15vw;
+}
+
+#dropdown {
+  position: absolute;
+  left: 51.65vw;
+  display: flex;
+  flex-direction: column;
+  width: 14vw;
+}
+
+#ddbutton {
+  box-sizing: border-box;
+  height: 6vh;
+  width: 14vw;
+  font-size: 3vh;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(255, 255, 255);
+  border: solid 1px gray;
+}
+
+#ddbutton:hover {
+  border: solid 1px rgb(54, 54, 54);
+}
+
+#ddbutton div {
+  width: 1.3vh;
+  height: 1.3vh;
+  border: solid 0.5vh black;
+  rotate: 45deg;
+  border-top: none;
+  border-left: none;
+  margin-bottom: 0.8vh;
+}
+
+#ddbutton label {
+  padding-right: 8vw;
+  cursor: pointer;
+}
+#ddbutton .open {
+  margin-right: 1.5vw;
+  rotate: -45deg;
+}
+
+#ddbutton .back {
+  rotate: 135deg;
+}
+
+
 .ppl_row .input {
   width: 15vw;
   height: 6vh;
@@ -236,7 +299,9 @@ code {
   width: 12vw;
   height: 6vh;
   box-sizing: border-box;
+  font-size: 3vh;
 }
+
 
 .increse_decrease {
   display: flex;
@@ -269,10 +334,6 @@ code {
   border-bottom: none;
   border-right: none;
   rotate: -135deg;
-}
-.ppl_row div {
-  width: 10vw;
-  display: flex;
 }
 
 .delete_exercise {
@@ -378,3 +439,42 @@ code {
   height: 6vh;
   width: 4vw;
 }
+
+.menu-primary-enter {
+  position: absolute;
+  transform: translateX(-110%);
+}
+
+.menu-primary-enter-active {
+  transform: translateX(0%);
+  transition: all var(--speed) ease;
+}
+
+.menu-primary-exit {
+  position: absolute;
+}
+
+.menu-primary-exit-active {
+  transform: translateX(-110%);
+  transition: all var(--speed) ease;
+}
+
+.menu-secondary-enter {
+  position: absolute;
+  transform: translateX(110%);
+}
+
+.menu-secondary-enter-active {
+  transform: translateX(0%);
+  transition: all var(--speed) ease;
+}
+
+.menu-secondary-exit {
+  position: absolute;
+}
+
+.menu-secondary-exit-active {
+  transform: translateX(110%);
+  transition: all var(--speed) ease;
+}
+
