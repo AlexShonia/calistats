@@ -42,7 +42,6 @@ function Add_exercise_btn({
       exercise: "Select an exercise",
       reps_seconds: 0,
       key: exercise_key,
-      level: 0,
     });
 
     setExerciseData(list);

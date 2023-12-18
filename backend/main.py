@@ -8,10 +8,9 @@ import calculate
 import login
 import register
 import exercises
+import loadExercises
 
 app = FastAPI()
-
-exercise_db = {"One arm pushups": 48, "Pushups": 8, "Planche": 68}
 
 origins = [
     "http://localhost:3000",
@@ -40,3 +39,4 @@ exercises.seed_exercises(SessionLocal())
 app.include_router(login.api_router, prefix="/login")
 app.include_router(calculate.api_router, prefix="/calculate")
 app.include_router(register.api_router, prefix="/register")
+app.include_router(loadExercises.api_router, prefix="/loadExercises")

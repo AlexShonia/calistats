@@ -9,19 +9,28 @@ import {
 } from "./buttons";
 
 function Push() {
-  const exercise_progressions = [
-    "Pushups",
-    "Diamond Pushups",
-    "Ring Wide PU",
-    "Ring Wide PU",
-    "Ring PU",
-    "RTO Pushups",
-    "RTO Archer PU",
-    "RTO 40 deg PPPU",
-    "RTO 60 deg PPPU",
-  ];
+  const exercises = {
+    Pushups: [
+      "Pushups",
+      "Diamond Pushups",
+      "Ring Wide PU",
+      "Ring Wide PU",
+      "Ring PU",
+      "RTO Pushups",
+      "RTO Archer PU",
+      "RTO 40 deg PPPU",
+      "RTO 60 deg PPPU",
+    ],
+    "One Arm PU": [
+      "elevated OA PU",
+      "Straddle OA PU",
+      "rings str. OA PU",
+      "straight bdy OA PU",
+      "rings SB OA PU",
+    ],
+  };
 
-  return <PPL_windows exercise_progressions={exercise_progressions} />;
+  return <PPL_windows exercises={exercises} />;
 }
 
 function Pull() {
@@ -51,7 +60,7 @@ function DropDownMenu({
   exerciseData,
   setExerciseData,
   index,
-  exercise_progressions,
+  exercises,
 }) {
   const [activeMenu, setActiveMenu] = useState("main");
 
@@ -63,8 +72,14 @@ function DropDownMenu({
         setOpen(-1);
         const updatedExerciseData = exerciseData;
         updatedExerciseData[index].exercise = props.children;
+        for (const key in exercises) {
+          if(exercises[key].includes(props.children)){
+            updatedExerciseData[index].type = key
+            break;
+          }
+        }
+        console.log(updatedExerciseData)
         setExerciseData(updatedExerciseData);
-        console.log(updatedExerciseData);
       }
     };
 
@@ -84,83 +99,36 @@ function DropDownMenu({
         classNames="menu-primary"
       >
         <div className="menu">
-          <DropDownItem goToMenu="pushups">
-            Pushups <div className="open"></div>
-          </DropDownItem>
-          <DropDownItem goToMenu="pullups">
-            Pullups <div className="open"></div>
-          </DropDownItem>
-          <DropDownItem goToMenu="legs">
-            Squat <div className="open"></div>
-          </DropDownItem>
-          <DropDownItem goToMenu="legs">
-            Squat <div className="open"></div>
-          </DropDownItem>
-          <DropDownItem goToMenu="legs">
-            Squat <div className="open"></div>
-          </DropDownItem>
-          <DropDownItem goToMenu="legs">
-            Squat <div className="open"></div>
-          </DropDownItem>
-          <DropDownItem goToMenu="legs">
-            Squat <div className="open"></div>
-          </DropDownItem>
-          <DropDownItem goToMenu="legs">
-            Squat <div className="open"></div>
-          </DropDownItem>
-        </div>
-      </CSSTransition>
-
-      <CSSTransition
-        in={activeMenu === "pushups"}
-        unmountOnExit
-        timeout={500}
-        classNames="menu-secondary"
-      >
-        <div className="menu exerciseDropdown">
-          <DropDownItem goToMenu="main">
-            <div className="back"></div> <label>Back</label>
-          </DropDownItem>
-          {exercise_progressions.map((option) => (
-            <DropDownItem>{option}</DropDownItem>
+          {Object.keys(exercises).map((option) => (
+            <DropDownItem goToMenu={option} key={option}>
+              {option} <div className="open"></div>
+            </DropDownItem>
           ))}
         </div>
       </CSSTransition>
-      {/* 
-      <CSSTransition
-        in={activeMenu === "pullups"}
-        unmountOnExit
-        timeout={500}
-        classNames="menu-secondary"
-      >
-        <div className="menu exerciseDropdown">
-          <DropDownItem className="button" id="ddbutton" goToMenu="main">
-          Back 
-          </DropDownItem>
-          <DropDownItem>Regular Pullups</DropDownItem>
-          <DropDownItem>Explosive Pullups</DropDownItem>
-        </div>
-      </CSSTransition>
 
-      <CSSTransition
-        in={activeMenu === "legs"}
-        unmountOnExit
-        timeout={500}
-        classNames="menu-secondary"
-      >
-        <div className="menu exerciseDropdown">
-          <DropDownItem className="button" id="ddbutton" goToMenu="main">
-          Back
-          </DropDownItem>
-          <DropDownItem>Regular Squats</DropDownItem>
-          <DropDownItem>Pistol Squats</DropDownItem>
-        </div>
-      </CSSTransition> */}
+      {Object.keys(exercises).map((option) => (
+        <CSSTransition
+          in={activeMenu === option}
+          unmountOnExit
+          timeout={500}
+          classNames="menu-secondary"
+        >
+          <div className="menu exerciseDropdown">
+            <DropDownItem goToMenu="main">
+              <div className="back"></div> <label>Back</label>
+            </DropDownItem>
+            {exercises[option].map((option1) => (
+              <DropDownItem>{option1}</DropDownItem>
+            ))}
+          </div>
+        </CSSTransition>
+      ))}
     </div>
   );
 }
 
-function PPL_windows({ exercise_progressions }) {
+function PPL_windows({ exercises }) {
   const [exercise_key, set_exercise_key] = useState(0);
   const [exerciseData, setExerciseData] = useState([]);
   const [totalResponse, setTotalResponse] = useState(0);
@@ -206,7 +174,7 @@ function PPL_windows({ exercise_progressions }) {
                   setExerciseData={setExerciseData}
                   exerciseData={exerciseData}
                   index={index}
-                  exercise_progressions={exercise_progressions}
+                  exercises={exercises}
                 ></DropDownMenu>
               ) : (
                 ""
