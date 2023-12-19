@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Column, Integer, String, Boolean, Float
+from sqlalchemy import Column, Integer, String, JSON
 
 class Users(Base):
     __tablename__="users"
@@ -14,3 +14,8 @@ class Exercises(Base):
     name = Column(String, unique=True, index=True)
     level = Column(Integer)
 
+class SavedWindow(Base):
+    __tablename__="savedwindow"
+
+    id = Column(Integer, primary_key=True, index=True)
+    exerciseData = Column(JSON)

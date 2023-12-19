@@ -15,7 +15,7 @@ const Header = () => {
           <div />
           <div />
         </button>
-        {open ? <DropDownMenu /> : ""}
+        {open ? <DropDownMenu setOpen={setOpen} open={open} /> : ""}
         <Link to="/" className="button bigbtn">
           Home
         </Link>
@@ -29,18 +29,34 @@ const Header = () => {
   );
 };
 
-function DropDownMenu() {
-  const {logout } = useAuth();
+function DropDownMenu({ setOpen, open }) {
+  const { logout } = useAuth();
   return (
     <div className="menuDropdown">
       <div>MENU</div>
-      <Link to="/create_character" className="button bigbtn">
+      <Link
+        to="/create_character"
+        className="button bigbtn"
+        onClick={() => setOpen(!open)}
+      >
         Create Character
       </Link>
-      <Link to="/load_character" className="button bigbtn">
+      <Link
+        to="/load_character"
+        className="button bigbtn"
+        onClick={() => setOpen(!open)}
+      >
         Load Character
       </Link>
-      <div className="button bigbtn" onClick={()=> logout()}>Logout</div>
+      <div
+        className="button bigbtn"
+        onClick={() => {
+          logout();
+          setOpen(!open);
+        }}
+      >
+        Logout
+      </div>
     </div>
   );
 }

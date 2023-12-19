@@ -1,5 +1,8 @@
 import React from "react";
 import api from "../api";
+import { useAuth } from "../AuthContext";
+import { json } from "react-router-dom";
+
 
 function Stats_btn({ is_stat, set_is_stat }) {
   return (
@@ -55,12 +58,20 @@ function Add_exercise_btn({
 }
 
 function Calculate_btn({ exerciseData, setTotalResponse }) {
+  const { isLoggedIn, logout, name } = useAuth();
+
   const handleSubmit = async (event) => {
     let filteredData = exerciseData.filter(
       (item) => item.exercise !== "Select an exercise"
     );
-    const data = { exerciseData: [...filteredData] };
 
+    if(!isLoggedIn){
+      sessionStorage.setItem("exerciseData", JSON.stringify(filteredData))
+      const storedData = sessionStorage.getItem("exerciseData");
+      const parsedData = JSON.parse(storedData)
+      console.log(parsedData)
+    }
+    const data = { exerciseData: [...filteredData], isLoggedIn: isLoggedIn };
     const response = await api.post("/calculate/", data);
     setTotalResponse(Math.round(response.data.total_level));
 

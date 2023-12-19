@@ -9,10 +9,27 @@ import {
 } from "./buttons";
 
 import { Push, Pull, Legs } from "./ppl_windows";
+import { useAuth } from "../AuthContext";
 
 function Skill_wind() {
   const [curWind, setCurWind] = useState("All");
   const windows = ["All Skills", "Push", "Pull", "Legs"];
+  const [response, setResponse] = useState();
+  const { isLoggedIn, logout, name } = useAuth();
+
+  const handleClick = async (index) => {
+    setCurWind(windows[index]);
+
+    if(isLoggedIn){
+      const rsp = await api.get("/loadExercises/");
+      setResponse(rsp.data);
+    } else {
+      const storedData = sessionStorage.getItem("exerciseData");
+      const parsedData = JSON.parse(storedData)
+      setResponse({exerciseData : parsedData})
+    }
+  };
+
   return (
     <>
       <div className="skills">
@@ -20,7 +37,7 @@ function Skill_wind() {
           <button
             className={curWind === window ? "clicked" : "button app_button"}
             onClick={() => {
-              setCurWind(windows[index]);
+              handleClick(index);
             }}
           >
             {windows[index]}
@@ -28,7 +45,7 @@ function Skill_wind() {
         ))}
       </div>
       {curWind == windows[0] ? <All_skills /> : null}
-      {curWind == windows[1] ? <Push /> : null}
+      {curWind == windows[1] ? <Push rspData={response} /> : null}
       {curWind == windows[2] ? <Pull /> : null}
       {curWind == windows[3] ? <Legs /> : null}
     </>

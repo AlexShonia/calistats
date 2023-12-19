@@ -15,7 +15,7 @@ class ExerciseItem(BaseModel):
 
 class ExerciseData(BaseModel):
     exerciseData: List[ExerciseItem]
-
+    isLoggedIn: bool
 class ExerciseResponse(BaseModel):
     total_level: float    
     ind_levels: list    
@@ -37,10 +37,11 @@ def get_db():
 async def calculate(data : ExerciseData,
                     db: Session = Depends(get_db)):
     
-    json_data = json.dumps(data.model_dump())
-    saved_window_instance = models.SavedWindow(exerciseData=json_data)
-    db.add(saved_window_instance)
-    db.commit()
+    if data.isLoggedIn:
+        json_data = json.dumps(data.model_dump())
+        saved_window_instance = models.SavedWindow(exerciseData=json_data)
+        db.add(saved_window_instance)
+        db.commit()
 
     response = ExerciseResponse(total_level=0, ind_levels=[])
 

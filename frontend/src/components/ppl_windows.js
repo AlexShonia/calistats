@@ -7,8 +7,9 @@ import {
   Add_exercise_btn,
   Calculate_btn,
 } from "./buttons";
+import { useAuth } from "../AuthContext";
 
-function Push() {
+function Push({ rspData }) {
   const exercises = {
     Pushups: [
       "Pushups",
@@ -29,8 +30,7 @@ function Push() {
       "rings SB OA PU",
     ],
   };
-
-  return <PPL_windows exercises={exercises} />;
+  return <PPL_windows exercises={exercises} rspData={rspData} />;
 }
 
 function Pull() {
@@ -73,12 +73,12 @@ function DropDownMenu({
         const updatedExerciseData = exerciseData;
         updatedExerciseData[index].exercise = props.children;
         for (const key in exercises) {
-          if(exercises[key].includes(props.children)){
-            updatedExerciseData[index].type = key
+          if (exercises[key].includes(props.children)) {
+            updatedExerciseData[index].type = key;
             break;
           }
         }
-        console.log(updatedExerciseData)
+        console.log(updatedExerciseData);
         setExerciseData(updatedExerciseData);
       }
     };
@@ -128,11 +128,19 @@ function DropDownMenu({
   );
 }
 
-function PPL_windows({ exercises }) {
+function PPL_windows({ exercises, rspData }) {
   const [exercise_key, set_exercise_key] = useState(0);
   const [exerciseData, setExerciseData] = useState([]);
   const [totalResponse, setTotalResponse] = useState(0);
   const [open, setOpen] = useState(-1);
+  const { isLoggedIn, logout, name } = useAuth();
+
+  useEffect(() => {
+    if (Array.isArray(rspData?.exerciseData)) {
+      setExerciseData(rspData?.exerciseData);
+      console.log(isLoggedIn)
+    }
+  }, [rspData?.exerciseData]);
 
   const handleInputChange = (event, index) => {
     const value = event.target.value;
@@ -149,6 +157,7 @@ function PPL_windows({ exercises }) {
       setOpen(index);
     }
   };
+
   return (
     <>
       <div className="ppl_window">
@@ -157,7 +166,7 @@ function PPL_windows({ exercises }) {
           <div>reps/seconds</div>
           <div id="level">level</div>
         </div>
-        {exerciseData.map((i, index) => (
+        {exerciseData?.map((i, index) => (
           <div className="ppl_row" key={i.key}>
             <div id="dropdown">
               <button
