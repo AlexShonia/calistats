@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-import {
-  Skills_btn,
-  Stats_btn,
-  Delete_exercise_btn,
-  Add_exercise_btn,
-  Calculate_btn,
-} from "./buttons";
 
 import { Push, Pull, Legs } from "./ppl_windows";
 import { useAuth } from "../AuthContext";
@@ -15,18 +8,34 @@ function Skill_wind() {
   const [curWind, setCurWind] = useState("All");
   const windows = ["All Skills", "Push", "Pull", "Legs"];
   const [response, setResponse] = useState();
-  const { isLoggedIn, logout, name } = useAuth();
+  const {
+    isLoggedIn,
+    logout,
+    name,
+    mail,
+    isGuestLoggedOut,
+    setIsGuestLoggedOut,
+  } = useAuth();
+  const [exerciseData, setExerciseData] = useState([]);
+
+  useEffect(() => {
+    if (isGuestLoggedOut) {
+      setExerciseData([]);
+      setIsGuestLoggedOut(false);
+      setResponse({ exerciseData: [] });
+    }
+  }, [isGuestLoggedOut]);
 
   const handleClick = async (index) => {
     setCurWind(windows[index]);
-
-    if(isLoggedIn){
-      const rsp = await api.get("/loadExercises/");
-      setResponse(rsp.data);
+    if (isLoggedIn) {
+      const rsp = await api.get(`/loadExercises/?email=${mail}`);
+      setExerciseData(rsp.data.exerciseData);
     } else {
       const storedData = sessionStorage.getItem("exerciseData");
-      const parsedData = JSON.parse(storedData)
-      setResponse({exerciseData : parsedData})
+      const parsedData = JSON.parse(storedData) || [];
+      setExerciseData(parsedData);
+      setResponse({ exerciseData: parsedData });
     }
   };
 
@@ -45,7 +54,9 @@ function Skill_wind() {
         ))}
       </div>
       {curWind == windows[0] ? <All_skills /> : null}
-      {curWind == windows[1] ? <Push rspData={response} /> : null}
+      {curWind == windows[1] ? (
+        <Push exerciseData={exerciseData} setExerciseData={setExerciseData} />
+      ) : null}
       {curWind == windows[2] ? <Pull /> : null}
       {curWind == windows[3] ? <Legs /> : null}
     </>

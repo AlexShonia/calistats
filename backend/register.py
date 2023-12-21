@@ -11,8 +11,9 @@ import models
 
 api_router = APIRouter()
 
-class RegisterResponse(BaseModel):
-    name: str
+class RegisterData(BaseModel):
+    username: str
+    email: str
     password: str
 
 def get_db():
@@ -24,10 +25,10 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
-@api_router.post("/", response_model=RegisterResponse)
-async def register(register_data: RegisterResponse, db: db_dependency):
+@api_router.post("/", response_model=RegisterData)
+async def register(register_data: RegisterData, db: db_dependency):
     try:
-        db_register = models.Users(**register_data.model_dump())
+        db_register = models.User(**register_data.model_dump())
         db.add(db_register)
         db.commit()
         db.refresh(db_register)

@@ -55,13 +55,13 @@ def seed_exercises(db: Session):
     ]
 
     for exercise in exercises:
-        existing_exercise = db.query(models.Exercises).filter_by(name=exercise["name"]).first()
+        existing_exercise = db.query(models.Exercise).filter_by(name=exercise["name"]).first()
 
         if existing_exercise:
             existing_exercise.level = exercise["level"]
             existing_exercise.name = exercise["name"]
         else:    
-            db_exercise = models.Exercises(**exercise)
+            db_exercise = models.Exercise(**exercise)
             db.add(db_exercise)
 
     db.commit()

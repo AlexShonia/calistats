@@ -10,8 +10,8 @@ import models
 
 api_router = APIRouter()
 
-class LoginResponse(BaseModel):
-    name: str
+class LoginData(BaseModel):
+    email: str
     password: str
 
     class Config:
@@ -26,18 +26,19 @@ def get_db():
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
-@api_router.post("/", response_model=LoginResponse)
-async def login(login_data: LoginResponse, db: db_dependency):
+@api_router.post("/", response_model=LoginData)
+async def login(login_data: LoginData, db: db_dependency):
 
-    params = {"username" : login_data.name, "password": login_data.password}
-    query = text('SELECT * FROM users WHERE name= :username AND password = :password')
+    params = {"email" : login_data.email, "password": login_data.password}
+    query = text('SELECT * FROM users WHERE email= :email AND password = :password')
     row = db.execute(query, params).fetchone()
+
     print(row)
     if row == None:
         print("wrong usernmae")
         raise HTTPException(status_code=401, detail="NOSucc cess")
     else:
-        raise HTTPException(status_code=200, detail=login_data.name)
+        raise HTTPException(status_code=200, detail=row.username)
 
 
     

@@ -5,7 +5,7 @@ import { useAuth } from "../AuthContext";
 const Header = () => {
   const [open, setOpen] = useState(false);
 
-  const { isLoggedIn, logout, name } = useAuth();
+  const { isLoggedIn, name } = useAuth();
 
   return (
     <>
@@ -30,7 +30,7 @@ const Header = () => {
 };
 
 function DropDownMenu({ setOpen, open }) {
-  const { logout } = useAuth();
+  const { logout, isLoggedIn, setIsGuestLoggedOut } = useAuth();
   return (
     <div className="menuDropdown">
       <div>MENU</div>
@@ -53,6 +53,9 @@ function DropDownMenu({ setOpen, open }) {
         onClick={() => {
           logout();
           setOpen(!open);
+          if(isLoggedIn){
+            setIsGuestLoggedOut(true)
+          }
         }}
       >
         Logout

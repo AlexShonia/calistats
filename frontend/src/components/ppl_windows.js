@@ -9,7 +9,7 @@ import {
 } from "./buttons";
 import { useAuth } from "../AuthContext";
 
-function Push({ rspData }) {
+function Push({ exerciseData, setExerciseData }) {
   const exercises = {
     Pushups: [
       "Pushups",
@@ -30,7 +30,13 @@ function Push({ rspData }) {
       "rings SB OA PU",
     ],
   };
-  return <PPL_windows exercises={exercises} rspData={rspData} />;
+  return (
+    <PPL_windows
+      exercises={exercises}
+      exerciseData={exerciseData}
+      setExerciseData={setExerciseData}
+    />
+  );
 }
 
 function Pull() {
@@ -78,7 +84,6 @@ function DropDownMenu({
             break;
           }
         }
-        console.log(updatedExerciseData);
         setExerciseData(updatedExerciseData);
       }
     };
@@ -128,19 +133,11 @@ function DropDownMenu({
   );
 }
 
-function PPL_windows({ exercises, rspData }) {
+function PPL_windows({ exercises, exerciseData, setExerciseData }) {
   const [exercise_key, set_exercise_key] = useState(0);
-  const [exerciseData, setExerciseData] = useState([]);
   const [totalResponse, setTotalResponse] = useState(0);
   const [open, setOpen] = useState(-1);
   const { isLoggedIn, logout, name } = useAuth();
-
-  useEffect(() => {
-    if (Array.isArray(rspData?.exerciseData)) {
-      setExerciseData(rspData?.exerciseData);
-      console.log(isLoggedIn)
-    }
-  }, [rspData?.exerciseData]);
 
   const handleInputChange = (event, index) => {
     const value = event.target.value;

@@ -8,7 +8,7 @@ import calculate
 import login
 import register
 import exercises
-import loadExercises
+import loadChoices
 
 app = FastAPI()
 
@@ -39,4 +39,4 @@ exercises.seed_exercises(SessionLocal())
 app.include_router(login.api_router, prefix="/login")
 app.include_router(calculate.api_router, prefix="/calculate")
 app.include_router(register.api_router, prefix="/register")
-app.include_router(loadExercises.api_router, prefix="/loadExercises")
+app.include_router(loadChoices.api_router, prefix="/loadExercises")

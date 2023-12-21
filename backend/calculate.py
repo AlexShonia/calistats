@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, Depends
+from fastapi import FastAPI, APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from typing import Annotated, List
 from sqlalchemy.orm import Session
@@ -16,12 +16,13 @@ class ExerciseItem(BaseModel):
 class ExerciseData(BaseModel):
     exerciseData: List[ExerciseItem]
     isLoggedIn: bool
+    email: str
 class ExerciseResponse(BaseModel):
     total_level: float    
     ind_levels: list    
 
 def get_exercise_levels(db: Session):
-    exercises = db.query(models.Exercises).all()
+    exercises = db.query(models.Exercise).all()
     exercise_db = {exercise.name: exercise.level for exercise in exercises}
     return exercise_db
 
@@ -36,12 +37,23 @@ def get_db():
 @api_router.post("/", response_model=ExerciseResponse)
 async def calculate(data : ExerciseData,
                     db: Session = Depends(get_db)):
-    
+    print(data)
+    user = db.query(models.User).filter(models.User.email == data.email).first()
     if data.isLoggedIn:
-        json_data = json.dumps(data.model_dump())
-        saved_window_instance = models.SavedWindow(exerciseData=json_data)
-        db.add(saved_window_instance)
-        db.commit()
+        if user:
+            json_data = data.model_dump()
+            print(data.model_dump())
+            saved_window_instance = db.query(models.SavedChoice).filter(models.SavedChoice.user == user).first()
+            print(saved_window_instance)
+            if saved_window_instance:
+                saved_window_instance.exerciseData = json_data
+            else:    
+                saved_window_instance = models.SavedChoice(exerciseData=json_data, user=user)
+                db.add(saved_window_instance)
+
+            db.commit()
+        else:
+            raise HTTPException(status_code=404, detail="User not found")
 
     response = ExerciseResponse(total_level=0, ind_levels=[])
 

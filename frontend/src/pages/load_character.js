@@ -6,23 +6,25 @@ import api from "../api";
 const Load_character = () => {
   const [error, setError] = useState();
   const [loadData, setloadData] = useState({
-    name: "",
+    email: "",
     password: "",
   });
-  const [passType, setPassType] = useState(true)
+  const [passType, setPassType] = useState(true);
 
   const navigate = useNavigate();
-  const { login, changeName } = useAuth();
+  const { login, changeMail, changeName } = useAuth();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await api.post("/login/", loadData);
       setloadData({
-        name: "",
+        email: "",
         password: "",
       });
       login();
+      changeMail(loadData.email);
+      
       changeName(response.data.detail);
       navigate("/");
     } catch (error) {
@@ -41,12 +43,12 @@ const Load_character = () => {
   return (
     <div className="authorisation">
       <div>Login</div>
-      <label>Character name or email:</label>
+      <label>Character email:</label>
       <input
-        name="name"
+        name="email"
         onChange={handleInputChange}
-        value={loadData.name}
-        placeholder="Name"
+        value={loadData.email}
+        placeholder="Email"
       ></input>
       <label>Password</label>
       <div id="inputbutton">
@@ -58,12 +60,12 @@ const Load_character = () => {
           type={passType ? "password" : "text"}
         ></input>
         <button
-         onClick={()=> setPassType(!passType)}
-         id={passType ? "hidden" : "shown"}
-         className="button"
+          onClick={() => setPassType(!passType)}
+          id={passType ? "hidden" : "shown"}
+          className="button"
         ></button>
       </div>
-      
+
       <div>{error}</div>
       <button onClick={handleSubmit}>Load</button>
     </div>

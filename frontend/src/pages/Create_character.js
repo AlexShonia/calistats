@@ -5,7 +5,8 @@ import api from "../api";
 const Create_character = () => {
   const [error, setError] = useState();
   const [loadData, setloadData] = useState({
-    name: "",
+    username: "",
+    email: "",
     password: "",
   });
   const [passType, setPassType] = useState(true);
@@ -16,7 +17,8 @@ const Create_character = () => {
     try {
       const response = await api.post("/register/", loadData);
       setloadData({
-        name: "",
+        username: "",
+        email: "",
         password: "",
       });
       setError("");
@@ -38,14 +40,21 @@ const Create_character = () => {
   return (
     <div className="authorisation">
       <div>Register</div>
-      <label>Character name or email:</label>
+      <label>Email:</label>
       <input
-        name="name"
+        name="email"
         onChange={handleInputChange}
-        value={loadData.name}
-        placeholder="Name"
+        value={loadData.email}
+        placeholder="Email"
       ></input>
-      <label>Password</label>
+      <label>Username:</label>
+      <input
+        name="username"
+        onChange={handleInputChange}
+        value={loadData.username}
+        placeholder="Username"
+      ></input>
+      <label>Password:</label>
       <div id="inputbutton">
         <input
           name="password"
